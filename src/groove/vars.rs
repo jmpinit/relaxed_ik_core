@@ -6,6 +6,7 @@ use std::ops::Deref;
 use yaml_rust::{YamlLoader, Yaml};
 use std::fs::File;
 use std::io::prelude::*;
+use std::path::Path;
 
 use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
@@ -41,7 +42,15 @@ impl RelaxedIKVars {
         let docs = YamlLoader::load_from_str(contents.as_str()).unwrap();
         let settings = &docs[0];
 
-        let path_to_urdf = path_to_src + "configs/urdfs/" + settings["urdf"].as_str().unwrap();
+        // If the URDF is a relative path, then make it relative to the config file
+        let settings_dir = Path::new(path_to_setting).parent().unwrap();
+        let raw_urdf_path = Path::new(settings["urdf"].as_str().unwrap());
+        let path_to_urdf = if raw_urdf_path.is_relative() {
+            settings_dir.join(raw_urdf_path).to_str().unwrap().to_string()
+        } else {
+            raw_urdf_path.to_str().unwrap().to_string()
+        };
+
         println!("RelaxedIK is using below URDF file: {}", path_to_urdf);
         let chain = k::Chain::<f64>::from_urdf_file(path_to_urdf.clone()).unwrap();
 
