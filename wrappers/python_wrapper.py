@@ -10,7 +10,7 @@ class RelaxedIKS(ctypes.Structure):
     pass
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-lib = ctypes.cdll.LoadLibrary(dir_path + '/../target/debug/librelaxed_ik_lib.so')
+lib = ctypes.cdll.LoadLibrary(dir_path + '/../target/debug/librelaxed_ik_lib.dylib')
 
 lib.relaxed_ik_new.restype = ctypes.POINTER(RelaxedIKS)
 lib.solve.argtypes = [ctypes.POINTER(RelaxedIKS), ctypes.POINTER(ctypes.c_double), ctypes.c_int, ctypes.POINTER(ctypes.c_double), ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
