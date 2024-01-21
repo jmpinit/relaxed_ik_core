@@ -133,12 +133,13 @@ impl RelaxedIKVars {
         self.xopt = xopt.clone();
     }
 
-    pub fn reset(&mut self, init_state: Vec<f64>) {
-        self.prev_state3 = init_state.clone();
-        self.prev_state2 = init_state.clone();
-        self.prev_state = init_state.clone();
-        self.xopt = init_state.clone();
+    pub fn reset(&mut self, init_state: Vec<f64>, prev_state: Vec<f64>, prev_state2: Vec<f64>, prev_state3: Vec<f64>) {
         self.init_state = init_state.clone();
+        self.prev_state = prev_state.clone();
+        self.prev_state2 = prev_state2.clone();
+        self.prev_state3 = prev_state3.clone();
+
+        self.xopt = init_state.clone();
 
         let mut init_ee_positions: Vec<Vector3<f64>> = Vec::new();
         let mut init_ee_quats: Vec<UnitQuaternion<f64>> = Vec::new();

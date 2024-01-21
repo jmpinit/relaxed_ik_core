@@ -27,15 +27,29 @@ pub unsafe extern "C" fn relaxed_ik_free(ptr: *mut RelaxedIK) {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn reset(ptr: *mut RelaxedIK, joint_state: *const c_double, joint_state_length: c_int) {
+pub unsafe extern "C" fn reset(
+    ptr: *mut RelaxedIK,
+    init_state: *const c_double, init_state_length: c_int,
+    prev_state: *const c_double, prev_state_length: c_int,
+    prev_state2: *const c_double, prev_state2_length: c_int,
+    prev_state3: *const c_double, prev_state3_length: c_int,
+) {
     let relaxed_ik = unsafe {
         assert!(!ptr.is_null());
         &mut *ptr
     };
 
-    let x_slice: &[c_double] = std::slice::from_raw_parts(joint_state, joint_state_length as usize);
-    let x_vec = x_slice.to_vec();
-    relaxed_ik.reset(x_vec);
+    let init_state_slice: &[c_double] = std::slice::from_raw_parts(init_state, init_state_length as usize);
+    let prev_state_slice: &[c_double] = std::slice::from_raw_parts(prev_state, prev_state_length as usize);
+    let prev_state2_slice: &[c_double] = std::slice::from_raw_parts(prev_state2, prev_state2_length as usize);
+    let prev_state3_slice: &[c_double] = std::slice::from_raw_parts(prev_state3, prev_state3_length as usize);
+
+    relaxed_ik.reset(
+        init_state_slice.to_vec(),
+        prev_state_slice.to_vec(),
+        prev_state2_slice.to_vec(),
+        prev_state3_slice.to_vec(),
+    );
 }
 
 #[no_mangle]

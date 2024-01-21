@@ -44,7 +44,12 @@ impl RelaxedIK {
             }
         };
 
-        self.vars.reset( starting_config.clone());
+        self.vars.reset(
+            starting_config.clone(),
+            starting_config.clone(),
+            starting_config.clone(),
+            starting_config.clone(),
+        );
     }
 
     pub fn solve_position(&mut self, pos_goal:  JsValue,  quat_goal:  JsValue, tolerance: JsValue) -> Array{

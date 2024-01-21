@@ -30,8 +30,8 @@ impl RelaxedIK {
         Self{vars, om, groove}
     }
 
-    pub fn reset(&mut self, x: Vec<f64>) {
-        self.vars.reset( x.clone());
+    pub fn reset(&mut self, init_state: Vec<f64>, prev_state: Vec<f64>, prev_state2: Vec<f64>, prev_state3: Vec<f64>) {
+        self.vars.reset(init_state, prev_state, prev_state2, prev_state3);
     }
 
     pub fn solve(&mut self) -> Vec<f64> {
